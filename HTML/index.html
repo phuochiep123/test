@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>22716371 - Huỳnh Thanh Giang</title>
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css">
+    <script src="../JS/jquery-3.7.1.min.js"></script>
+    <script src="../JS/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container" style="border: 1px groove;">
+        <div class="row" style="background-image: url(../IMAGES/3.jpg); height: 250px;"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-sm">
+                    <ul class="navbar-nav">
+                        <li class="nav-item ml-4"><a href="#" class="nav-link">Trang chủ</a></li>
+                        <li class="nav-item ml-4"><a href="#" class="nav-link" data-toggle="modal" data-target="#myModal">Đặt lịch</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-12">
+                <div class="modal fade justify-content-center" id="myModal" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Đặt lịch khám online</h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="registerForm">
+                                    <div class="row m-2 p-2">
+                                        <label for="maBN" class="col-md-12">Mã bệnh nhân: </label>
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control" id="maBN" placeholder="Mã bệnh nhân">
+                                            <span class="text-danger font-italic" id="errMa">(*) BN-YYYYYY</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-2 p-2">
+                                        <label for="pass" class="col-md-12">Mật khẩu: </label>
+                                        <div class="col-md-12">
+                                            <input type="password" class="form-control" id="pass" placeholder="Mật khẩu">
+                                            <span class="text-danger font-italic" id="errPass">(*)</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-2 p-2">
+                                        <label for="ngayKham" class="col-md-12">Ngày khám: </label>
+                                        <div class="col-md-12">
+                                            <input type="date" class="form-control" id="ngayKham" placeholder="dd/mm/yyyy">
+                                            <span class="text-danger font-italic" id="errDate">(*)</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-2 p-2">
+                                        <label for="" class="col-md-12">Loại dịch vụ: </label>
+                                        <div class="col-md-12">
+                                            <input type="checkbox" name="dichVu" id="yc">
+                                            <label for="yc" class="mr-3">Khám bệnh theo yêu cầu</label>
+                                            <input type="checkbox" name="dichVu" id="dt">
+                                            <label for="dt" class="mr-3">Điều trị ngoại trú</label>
+                                            <input type="checkbox" name="dichVu" id="bs">
+                                            <label for="bs" class="mr-3">Bác sĩ theo yêu cầu</label>
+                                        </div>
+                                    </div>
+                                    <div class="row m-2 p-2">
+                                        <label for="" class="col-md-12">Chuyên khoa: </label>
+                                        <div class="col-md-12">
+                                            <select id="khoa" class="form-control">
+                                                <option value="Ngoại tổng quát">Ngoại tổng quát</option>
+                                                <option value="Nhi">Nhi</option>
+                                                <option value="Nội tổng quát">Nội tổng quát</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row m-2 p-2">
+                                        <button type="button" class="btn btn-primary ml-3" onclick="validSubmit()">Lưu</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã bệnh nhân</th>
+                        <th>Mật khẩu</th>
+                        <th>Ngày khám</th>
+                        <th>Phụ thu dịch vụ</th>
+                        <th>Chuyên khoa</th>
+                    </tr>
+                </thead>
+                <tbody id="tbl"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <p>22716371 - Huỳnh Thanh Giang - DHHTTT17A</p>
+    </div>
+
+    <script>
+        let i = 0;
+        function validSubmit(){
+
+            let code = document.getElementById("maBN");
+            let codePattern = /^(BN-|CB-|CD-)[0-9]{6}$/;
+            if(!code.value){
+                document.getElementById("errMa").innerHTML = "Mã bệnh nhân không được rỗng";
+                code.focus();
+                return false;
+            } else if(!codePattern.test(code.value)){
+                    document.getElementById("errMa").innerHTML = "Mã bệnh nhân không đúng định dạng";
+                    code.focus();
+                    return false;
+            } else document.getElementById("errMa").innerHTML = "(*)";
+
+            let pass = document.getElementById("pass");
+            let passPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+            if(!pass.value){
+                document.getElementById("errPass").innerHTML = "Mật khẩu không được để rỗng";
+                pass.focus();
+                return false;
+            } else if(!passPattern.test(pass.value)){
+                    document.getElementById("errPass").innerHTML = "Mật khẩu không đúng định dạng";
+                    pass.focus();
+                    return false;
+            } else document.getElementById("errPass").innerHTML = "(*)";
+
+            let date = document.getElementById("ngayKham");
+            let today = new Date();
+            let parseDate = new Date(date.value);
+            if(!date.value){
+                document.getElementById("errDate").innerHTML = "Ngày khám phải sau ngày hiện tại";
+                date.focus();
+                return false;
+            } else if(parseDate < today){
+                document.getElementById("errDate").innerHTML = "Ngày khám phải sau ngày hiện tại";
+                date.focus();
+                return false;
+            } else document.getElementById("errDate").innerHTML = "(*)";
+
+            let yeuCau = document.getElementById("yc");
+            let dieuTri = document.getElementById("dt");
+            let bacSi = document.getElementById("bs");
+            let phuThu = 0;
+            if(yeuCau.checked){
+                phuThu += 400000;
+            }
+            if(dieuTri.checked){
+                phuThu += 600000;
+            }
+            if(bacSi.checked){
+                phuThu += 500000;
+            }
+
+            let khoa = document.getElementById("khoa");
+
+            let row = "<tr><td>" + (++i) + "</td><td>" + code.value + "</td><td>" + pass.value + "</td><td>" + date.value + "</td><td>" + phuThu + "</td><td>" + khoa.value + "</td></tr>";
+            let mytable = document.getElementById("tbl");
+            let newRow = mytable.insertRow(mytable.rows.length);
+            newRow.innerHTML = row;
+
+            $('#myModal').modal('hide');
+            document.getElementById("registerForm").reset();
+
+        }
+    </script>
+</body>
+</html>
